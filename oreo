@@ -1,0 +1,184 @@
+int __cdecl main()
+{
+  int v0; // ST1C_4@1
+  int result; // eax@1
+  int v2; // edx@1
+
+  v0 = *MK_FP(__GS__, 20);
+  dword_804A2A4 = 0;
+  dword_804A2A0 = 0;
+  dword_804A2A8 = (char *)&unk_804A2C0;
+  puts("Welcome to the OREO Original Rifle Ecommerce Online System!");
+  puts("\n     ,______________________________________\n    |_________________,----------._ [____]  -,__  __....-----=====\n                   (_(||||||||||||)___________/                   |\n                      `----------'   OREO [ ))\"-,                   |\n                                           \"\"    `,  _,--....___    |\n                                                   `/           \"\"\"\"\n\t");
+  sub_804898D();
+  result = 0;
+  v2 = *MK_FP(__GS__, 20) ^ v0;
+  return result;
+}
+
+int sub_804898D()
+{
+  int v1; // [sp+1Ch] [bp-Ch]@1
+
+  v1 = *MK_FP(__GS__, 20);
+  puts("What would you like to do?\n");
+  printf("%u. Add new rifle\n", 1);
+  printf("%u. Show added rifles\n", 2);
+  printf("%u. Order selected rifles\n", 3);
+  printf("%u. Leave a Message with your Order\n", 4);
+  printf("%u. Show current stats\n", 5);
+  printf("%u. Exit!\n", 6);
+  while ( 1 )
+  {
+    switch ( sub_8048896() )
+    {
+      default:
+        continue;
+      case 1:
+        sub_8048644();
+        break;
+      case 2:
+        sub_8048729();
+        break;
+      case 3:
+        sub_8048810();
+        break;
+      case 4:
+        sub_80487B4();
+        break;
+      case 5:
+        sub_8048906();
+        break;
+      case 6:
+        return *MK_FP(__GS__, 20) ^ v1;
+    }
+  }
+}
+
+int sub_8048896()
+{
+  int result; // eax@3
+  int v1; // edx@3
+  int v2; // [sp+18h] [bp-30h]@2
+  char s; // [sp+1Ch] [bp-2Ch]@2
+  int v4; // [sp+3Ch] [bp-Ch]@1
+
+  v4 = *MK_FP(__GS__, 20);
+  do
+  {
+    printf("Action: ");
+    fgets(&s, 32, stdin);
+  }
+  while ( !__isoc99_sscanf(&s, "%u", &v2) );
+  result = v2;
+  v1 = *MK_FP(__GS__, 20) ^ v4;
+  return result;
+}
+
+int sub_8048644()
+{
+  char *v1; // [sp+18h] [bp-10h]@1
+  int v2; // [sp+1Ch] [bp-Ch]@1
+
+  v2 = *MK_FP(__GS__, 20);
+  v1 = dword_804A288;
+  dword_804A288 = (char *)malloc(0x38u);
+  if ( dword_804A288 )
+  {
+    *((_DWORD *)dword_804A288 + 13) = v1;
+    printf("Rifle name: ");
+    fgets(dword_804A288 + 25, 56, stdin);
+    sub_80485EC(dword_804A288 + 25);
+    printf("Rifle description: ");
+    fgets(dword_804A288, 56, stdin);
+    sub_80485EC(dword_804A288);
+    ++dword_804A2A4;
+  }
+  else
+  {
+    puts("Something terrible happened!");
+  }
+  return *MK_FP(__GS__, 20) ^ v2;
+}
+
+int __cdecl sub_80485EC(const char *a1)
+{
+  size_t v1; // edx@1
+  char *v3; // [sp+28h] [bp-10h]@1
+  int v4; // [sp+2Ch] [bp-Ch]@1
+
+  v4 = *MK_FP(__GS__, 20);
+  v1 = strlen(a1) - 1;
+  v3 = (char *)&a1[v1];
+  if ( &a1[v1] >= a1 && *v3 == 10 )
+    *v3 = 0;
+  return *MK_FP(__GS__, 20) ^ v4;
+}
+
+int sub_8048729()
+{
+  char *i; // [sp+14h] [bp-14h]@1
+  int v2; // [sp+1Ch] [bp-Ch]@1
+
+  v2 = *MK_FP(__GS__, 20);
+  printf("Rifle to be ordered:\n%s\n", "===================================");
+  for ( i = dword_804A288; i; i = (char *)*((_DWORD *)i + 13) )
+  {
+    printf("Name: %s\n", i + 25);
+    printf("Description: %s\n", i);
+    puts("===================================");
+  }
+  return *MK_FP(__GS__, 20) ^ v2;
+}
+
+int sub_8048810()
+{
+  char *ptr; // ST18_4@3
+  char *v2; // [sp+14h] [bp-14h]@1
+  int v3; // [sp+1Ch] [bp-Ch]@1
+
+  v3 = *MK_FP(__GS__, 20);
+  v2 = dword_804A288;
+  if ( dword_804A2A4 )
+  {
+    while ( v2 )
+    {
+      ptr = v2;
+      v2 = (char *)*((_DWORD *)v2 + 13);
+      free(ptr);
+    }
+    dword_804A288 = 0;
+    ++dword_804A2A0;
+    puts("Okay order submitted!");
+  }
+  else
+  {
+    puts("No rifles to be ordered!");
+  }
+  return *MK_FP(__GS__, 20) ^ v3;
+}
+
+int sub_80487B4()
+{
+  int v0; // ST1C_4@1
+
+  v0 = *MK_FP(__GS__, 20);
+  printf("Enter any notice you'd like to submit with your order: ");
+  fgets(dword_804A2A8, 128, stdin);
+  sub_80485EC(dword_804A2A8);
+  return *MK_FP(__GS__, 20) ^ v0;
+}
+
+int sub_8048906()
+{
+  int v1; // [sp+1Ch] [bp-Ch]@1
+
+  v1 = *MK_FP(__GS__, 20);
+  puts("======= Status =======");
+  printf("New:    %u times\n", dword_804A2A4);
+  printf("Orders: %u times\n", dword_804A2A0);
+  if ( *dword_804A2A8 )
+    printf("Order Message: %s\n", dword_804A2A8);
+  puts("======================");
+  return *MK_FP(__GS__, 20) ^ v1;
+}
