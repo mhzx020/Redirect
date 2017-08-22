@@ -1,0 +1,155 @@
+int __cdecl __noreturn main(int argc, const char **argv, const char **envp)
+{
+  FILE *v3; // rdi@1
+  int v4; // eax@2
+
+  v3 = stdout;
+  setvbuf(stdout, 0LL, 2, 0LL);
+  while ( 1 )
+  {
+    print_menu(v3, 0LL);
+    v4 = get_num();
+    switch ( v4 )
+    {
+      case 2:
+        delete_paper();
+        break;
+      case 3:
+        secret();
+        break;
+      case 1:
+        add_paper();
+        break;
+    }
+  }
+}
+
+int print_menu()
+{
+  puts("Welcome to use the paper management system!");
+  puts("1 add paper");
+  return puts("2 delete paper");
+}
+
+__int64 get_num()
+{
+  __int64 result; // rax@3
+  __int64 v1; // rbx@3
+  unsigned int v2; // [sp+4h] [bp-5Ch]@1
+  char *endptr; // [sp+8h] [bp-58h]@1
+  char nptr; // [sp+10h] [bp-50h]@1
+  __int64 v5; // [sp+48h] [bp-18h]@1
+
+  v5 = *MK_FP(__FS__, 40LL);
+  get_input((__int64)&nptr, 48, 1);
+  v2 = strtol(&nptr, &endptr, 0);
+  if ( endptr == &nptr )
+  {
+    printf("%s input is not start with number!\n", &nptr);
+    v2 = get_num();
+  }
+  result = v2;
+  v1 = *MK_FP(__FS__, 40LL) ^ v5;
+  return result;
+}
+
+size_t __fastcall get_input(__int64 a1, int a2, int a3)
+{
+  size_t result; // rax@2
+  int v4; // [sp+0h] [bp-20h]@1
+  int v5; // [sp+10h] [bp-10h]@1
+  void *v6; // [sp+18h] [bp-8h]@2
+
+  v4 = a3;
+  v5 = 0;
+  while ( 1 )
+  {
+    v6 = (void *)(v5 + a1);
+    result = fread(v6, 1uLL, 1uLL, stdin);
+    if ( (signed int)result <= 0 )
+      break;
+    if ( *(_BYTE *)v6 == 10 && v4 )
+    {
+      if ( v5 )
+      {
+        result = v5 + a1;
+        *(_BYTE *)v6 = 0;
+        return result;
+      }
+    }
+    else
+    {
+      result = (unsigned int)++v5;
+      if ( v5 >= a2 )
+        return result;
+    }
+  }
+  return result;
+}
+
+int delete_paper()
+{
+  int v1; // [sp+Ch] [bp-4h]@1
+
+  printf("which paper you want to delete,please enter it's index(0-9):");
+  __isoc99_scanf("%d", &v1);
+  if ( v1 < 0 || v1 > 9 )
+    exit(1);
+  free(*(&link_list + v1));
+  return puts("delete success !");
+}
+
+__int64 secret()
+{
+  __int64 result; // rax@2
+  unsigned int v1; // [sp+4h] [bp-Ch]@2
+  char v2; // [sp+8h] [bp-8h]@1
+
+  printf("enter your luck number:");
+  __isoc99_scanf("%ld", &v2);
+  puts("Maybe you want continue manage paper?");
+  while ( 1 )
+  {
+    while ( 1 )
+    {
+      print_menu();
+      v1 = get_num();
+      result = v1;
+      if ( v1 != 1 )
+        break;
+      add_paper("Maybe you want continue manage paper?", &v2);
+    }
+    if ( v1 != 2 )
+      break;
+    delete_paper();
+  }
+  return result;
+}
+
+int add_paper()
+{
+  int v0; // ebx@7
+  int v2; // [sp+8h] [bp-18h]@1
+  int v3; // [sp+Ch] [bp-14h]@4
+
+  printf("Input the index you want to store(0-9):");
+  __isoc99_scanf("%d", &v2);
+  if ( v2 < 0 || v2 > 9 )
+    exit(1);
+  printf("How long you will enter:", &v2);
+  __isoc99_scanf("%d", &v3);
+  if ( v3 < 0 || v3 > 1024 )
+    exit(1);
+  v0 = v2;
+  *(&link_list + v0) = malloc(v3);
+  if ( !*(&link_list + v2) )
+    exit(1);
+  printf("please enter your content:", &v3);
+  get_input((__int64)*(&link_list + v2), v3, 1);
+  return puts("add success!");
+}
+
+int gg()
+{
+  return system("/bin/sh");
+}
